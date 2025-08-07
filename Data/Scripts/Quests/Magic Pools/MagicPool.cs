@@ -369,16 +369,17 @@ namespace Server.Items
 				{
 					from.PlaySound( Utility.RandomList( 0x30, 0x2D6 ) );
 					this.m_Uses = this.m_Uses - 1;
-					int mReturn = 0;
-					Item ILost = HiddenTrap.GetMyItem( from );
-					if ( ILost != null ){ ILost.Delete(); mReturn = 1; }
-					if ( mReturn != 1 )
-					{
-						from.SendMessage( "After drinking from the pool, you notice one of your equipped items disappears!" );
-						Effects.SendLocationParticles( EffectItem.Create( from.Location, from.Map, EffectItem.DefaultDuration ), 0x3728, 10, 10, 5023 );
+					from.SendMessage( "You drink from the pool and nothing happens!" );
+//					int mReturn = 0;
+//					Item ILost = HiddenTrap.GetMyItem( from );
+//					if ( ILost != null ){ ILost.Delete(); mReturn = 1; }
+//					if ( mReturn != 1 )
+//					{
+//						from.SendMessage( "After drinking from the pool, you notice one of your equipped items disappears!" );
+//						Effects.SendLocationParticles( EffectItem.Create( from.Location, from.Map, EffectItem.DefaultDuration ), 0x3728, 10, 10, 5023 );
 
-						LoggingFunctions.LogGenericQuest( from, "had an item vanish after drinking from a strange pool" );
-					}
+//						LoggingFunctions.LogGenericQuest( from, "had an item vanish after drinking from a strange pool" );
+//					}
 				}
 				else if ( m_Pool == 7 ) // LOSE A STAT POINT
 				{

@@ -93,7 +93,7 @@ namespace Server.Items
 
 				if ( nSprung )
 				{
-					int nTrapType = Utility.RandomMinMax( 1, 25 );
+					int nTrapType = Utility.RandomList( 1,6,14,15,16,17,18,19 );
 
 					if ( HiddenTrapType > 0 ){ nTrapType = HiddenTrapType; }
 
