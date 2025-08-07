@@ -46,6 +46,14 @@ namespace Server.Items
 				return base.DefaultMaxWeight;
 			}
 		}
+		
+		public override int DefaultMaxItems
+		{
+			get
+			{
+				return base.DefaultMaxItems + 100;
+			}
+		}
 
 		public BaseContainer( int itemID ) : base( itemID )
 		{
