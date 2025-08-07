@@ -934,6 +934,8 @@ namespace Server.Mobiles
 		private static void OnLogin( LoginEventArgs e )
 		{
 			Mobile from = e.Mobile;
+			
+			from.BankBox.MaxItems = 10000;
 
 			if ( AccountHandler.LockdownLevel > AccessLevel.Player )
 			{
