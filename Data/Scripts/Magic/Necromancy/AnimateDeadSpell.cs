@@ -82,7 +82,9 @@ namespace Server.Spells.Necromancy
 					}
 					else if ( slots_limit >= slots_max )
 					{
-						TimeSpan duration = TimeSpan.FromSeconds( ( ( Spell.ItemSkillValue( Caster, SkillName.Necromancy, false ) + Spell.ItemSkillValue( Caster, SkillName.Spiritualism, false )) / 2 ) * 9 );
+			//			TimeSpan duration = TimeSpan.FromSeconds( ( ( Spell.ItemSkillValue( Caster, SkillName.Necromancy, false ) + Spell.ItemSkillValue( Caster, SkillName.Spiritualism, false )) / 2 ) * 9 );
+
+						TimeSpan duration = TimeSpan.FromDays( 1.0 );
 
 						BaseCreature bc = (BaseCreature)m;
 
