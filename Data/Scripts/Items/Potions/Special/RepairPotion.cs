@@ -81,7 +81,7 @@ namespace Server.Items
 					else
 					{
 						from.SendLocalizedMessage( 1044279 ); // You repair the item.
-						repairing.MaxHitPoints = repairing.MaxHitPoints-1;
+						//repairing.MaxHitPoints = repairing.MaxHitPoints-1;
 						repairing.HitPoints = repairing.MaxHitPoints;
 						Server.Items.RepairPotion.ConsumeCharge( m_Potion, m_From );
 					}
@@ -100,7 +100,7 @@ namespace Server.Items
 					else
 					{
 						from.SendLocalizedMessage( 1044279 ); // You repair the item.
-						repairing.MaxHitPoints = repairing.MaxHitPoints-1;
+						//repairing.MaxHitPoints = repairing.MaxHitPoints-1;
 						repairing.HitPoints = repairing.MaxHitPoints;
 						Server.Items.RepairPotion.ConsumeCharge( m_Potion, m_From );
 					}
@@ -119,7 +119,7 @@ namespace Server.Items
 					else
 					{
 						from.SendLocalizedMessage( 1044279 ); // You repair the item.
-						repairing2.MaxHitPoints = repairing2.MaxHitPoints-1;
+						//repairing2.MaxHitPoints = repairing2.MaxHitPoints-1;
 						repairing2.HitPoints = repairing2.MaxHitPoints;
 						Server.Items.RepairPotion.ConsumeCharge( m_Potion, m_From );
 					}

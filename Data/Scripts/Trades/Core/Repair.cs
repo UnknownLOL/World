@@ -50,7 +50,7 @@ namespace Server.Engines.Craft
 			private int GetWeakenChance( Mobile mob, SkillName skill, int curHits, int maxHits )
 			{
 				// 40% - (1% per hp lost) - (1% per 10 craft skill)
-				return (40 + (maxHits - curHits)) - (int)(((m_Deed != null)? m_Deed.SkillLevel : mob.Skills[skill].Value) / 10);
+				return (0 * (40 + (maxHits - curHits)) - (int)(((m_Deed != null)? m_Deed.SkillLevel : mob.Skills[skill].Value) / 10));
 			}
 
 			private bool CheckWeaken( Mobile mob, SkillName skill, int curHits, int maxHits )
