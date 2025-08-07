@@ -126,7 +126,7 @@ namespace Server.Misc
 				HenchmanFunctions.BandageMySelf( from );
 				if ( HenchmanFunctions.IsInRestRegion( from ) == true ){} else
 				{
-					from.Fame = from.Fame - 5;
+					from.Fame = from.Fame - 0;
 					if ( from.Fame < 0 )
 					{
 						from.Fame = 0;
