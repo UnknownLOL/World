@@ -1727,16 +1727,16 @@ namespace Server.Mobiles
 
 		private bool CanInsure( Item item )
 		{
-			if ( (( item is Container) && !(item is BaseQuiver)) || item is BagOfSending || item is KeyRing )
-				return false;
+//			if ( (( item is Container) && !(item is BaseQuiver)) || item is BagOfSending || item is KeyRing )
+//				return false;
 
-			if ( (item is Spellbook && item.LootType == LootType.Blessed) || item is PotionKeg )
-				return false;
+//			if ( (item is Spellbook && item.LootType == LootType.Blessed) || item is PotionKeg )
+//				return false;
 
-			if ( item.Stackable )
-				return false;
+//			if ( item.Stackable )
+//				return false;
 
-			if ( item.LootType == LootType.Cursed )
+			if ( item.LootType == LootType.Cursed || item.LootType == LootType.Blessed )
 				return false;
 
 			return true;
@@ -1778,9 +1778,9 @@ namespace Server.Mobiles
 			{
 				if ( !item.PayedInsurance )
 				{
-					if ( Banker.Withdraw( from, 900 ) )
+					if ( Banker.Withdraw( from, 9 ) )
 					{
-						SendLocalizedMessage( 1060398, "900" ); // ~1_AMOUNT~ gold has been withdrawn from your bank box.
+						SendLocalizedMessage( 1060398, "9" ); // ~1_AMOUNT~ gold has been withdrawn from your bank box.
 						item.PayedInsurance = true;
 					}
 					else
@@ -2426,31 +2426,17 @@ namespace Server.Mobiles
 						if ( c.LootType != LootType.Blessed )
 						{
 							if (
-									c.Catalog == Catalogs.Jewelry || 
 									c.Catalog == Catalogs.Reagent || 
 									c.Catalog == Catalogs.Potion || 
 									c.Catalog == Catalogs.Body || 
 									c.Stackable || 
-									c is BaseTool || 
-									c is BaseHarvestTool || 
-									c is MagicalWand || 
-									c is BaseBeverage || 
+									c is MagicalWand ||
 									c is ManyArrows100 || 
 									c is ManyBolts100 || 
 									c is ManyArrows1000 || 
-									c is ManyBolts1000 || 
-									c is Bedroll || 
-									c is SmallTent || 
-									c is CampersTent || 
+									c is ManyBolts1000 ||
 									c is SkeletonsKey || 
-									c is MasterSkeletonsKey || 
-									c is Scissors || 
-									c is PolishBoneBrush || 
-									c is Torch || 
-									c is Candle || 
-									c is Lantern || 
-									c is DyeTub || 
-									c is Dyes 
+									c is MasterSkeletonsKey
 							)
 							{
 								c.Delete();
@@ -2520,7 +2506,7 @@ namespace Server.Mobiles
 			{
 				if ( AutoRenewInsurance )
 				{
-					int cost = 900;
+					int cost = 9;
 
 					if ( Banker.Withdraw( this, cost ) )
 					{
