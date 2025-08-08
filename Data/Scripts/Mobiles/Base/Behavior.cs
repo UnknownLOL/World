@@ -1120,14 +1120,14 @@ namespace Server.Misc
 				}
 			}
 
-			if ( (m.Region).Name != "the Castle of Knowledge" && !trick && m is PlayerMobile && m.Karma <= -5000 && m.Skills[SkillName.Knightship].Base >= 50 && !m.Region.IsPartOf(typeof(UmbraRegion)) && !m.Region.IsPartOf(typeof(NecromancerRegion)) )
-				enemy = true; // DEATH KNIGHTS ARE NOT WELCOME AFTER THIS POINT...EXCEPT IN UMBRA OR RAVENDARK
+//			if ( (m.Region).Name != "the Castle of Knowledge" && !trick && m is PlayerMobile && m.Karma <= -5000 && m.Skills[SkillName.Knightship].Base >= 50 && !m.Region.IsPartOf(typeof(UmbraRegion)) && !m.Region.IsPartOf(typeof(NecromancerRegion)) )
+//				enemy = true; // DEATH KNIGHTS ARE NOT WELCOME AFTER THIS POINT...EXCEPT IN UMBRA OR RAVENDARK
 
-			if ( (m.Region).Name != "the Castle of Knowledge" && !trick && m is PlayerMobile && m.Karma <= -5000 && m.Skills[SkillName.Psychology].Base >= 50 && Server.Misc.GetPlayerInfo.isSyth(m, false) && !m.Region.IsPartOf(typeof(UmbraRegion)) && !m.Region.IsPartOf(typeof(NecromancerRegion)) )
-				enemy = true; // SYTH ARE NOT WELCOME AFTER THIS POINT...EXCEPT IN UMBRA OR RAVENDARK
+//			if ( (m.Region).Name != "the Castle of Knowledge" && !trick && m is PlayerMobile && m.Karma <= -5000 && m.Skills[SkillName.Psychology].Base >= 50 && Server.Misc.GetPlayerInfo.isSyth(m, false) && !m.Region.IsPartOf(typeof(UmbraRegion)) && !m.Region.IsPartOf(typeof(NecromancerRegion)) )
+//				enemy = true; // SYTH ARE NOT WELCOME AFTER THIS POINT...EXCEPT IN UMBRA OR RAVENDARK
 
-			if ( (m.Region).Name != "the Castle of Knowledge" && !trick && m is PlayerMobile && m.Karma < 2500 && m.Fame < 2500 && Server.Items.BaseRace.IsEvil( m ) && !m.Region.IsPartOf(typeof(UmbraRegion)) && !m.Region.IsPartOf(typeof(NecromancerRegion)) && !m.Region.IsPartOf(typeof(GargoyleRegion)) )
-				enemy = true; // PLAYER CREATURES THAT ARE EVIL...EXCEPT IN UMBRA OR RAVENDARK
+//			if ( (m.Region).Name != "the Castle of Knowledge" && !trick && m is PlayerMobile && m.Karma < 2500 && m.Fame < 2500 && Server.Items.BaseRace.IsEvil( m ) && !m.Region.IsPartOf(typeof(UmbraRegion)) && !m.Region.IsPartOf(typeof(NecromancerRegion)) && !m.Region.IsPartOf(typeof(GargoyleRegion)) )
+//				enemy = true; // PLAYER CREATURES THAT ARE EVIL...EXCEPT IN UMBRA OR RAVENDARK
 
 			if (m is BaseCreature)
 			{
@@ -3743,7 +3743,7 @@ namespace Server.Misc
 						List<Item> belongings = new List<Item>();
 						foreach( Item i in from.Backpack.Items )
 						{
-							if ( i.LootType != LootType.Blessed && i.TotalItems == 0 ){ belongings.Add(i); c++; }
+							if ( i.LootType != LootType.Blessed && (Mobile.InsuranceEnabled && !i.Insured) && i.TotalItems == 0 ){ belongings.Add(i); c++; }
 						}
 
 						int o = Utility.RandomMinMax( 0, c );
