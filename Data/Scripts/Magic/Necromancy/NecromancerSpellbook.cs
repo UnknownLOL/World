@@ -22,6 +22,7 @@ namespace Server.Items
 		{
 			Name = "necromancer spellbook";
 			Layer = Layer.Trinket;
+			Attributes.LowerRegCost = 50;
 		}
 
 		public NecromancerSpellbook( Serial serial ) : base( serial )
