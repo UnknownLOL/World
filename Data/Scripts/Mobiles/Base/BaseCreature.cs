@@ -1802,6 +1802,7 @@ namespace Server.Mobiles
 		public static bool AlwaysInvulnerable( Mobile m )
 		{
 			if ( m is PackBear ){ return true; }
+			else if ( m is PackLobster ){ return true; }
 			else if ( m is PackMule ){ return true; }
 			else if ( m is PackStegosaurus ){ return true; }
 			else if ( m is PackTurtle ){ return true; }
@@ -8031,7 +8032,7 @@ namespace Server.Mobiles
 					if ( lantern is SoulLantern )
 					{
 						SoulLantern souls = (SoulLantern)lantern;
-						souls.TrappedSouls = souls.TrappedSouls + (this.TotalGold*2);
+						souls.TrappedSouls = souls.TrappedSouls + (this.TotalGold*12);
 						if ( souls.TrappedSouls > 100000 ){ souls.TrappedSouls = 100000; }
 						souls.InvalidateProperties();
 
@@ -8039,10 +8040,37 @@ namespace Server.Mobiles
 						if ( deathpack != null )
 						{
 							Item dtcoins = this.Backpack.FindItemByType( typeof( Gold ) );
-							dtcoins.Delete();
+//							dtcoins.Delete();
 							deathknight.SendMessage( "A soul has been claimed." );
 							Effects.SendLocationParticles( EffectItem.Create( deathknight.Location, deathknight.Map, EffectItem.DefaultDuration ), 0x376A, 9, 32, 5008 );
 							Effects.PlaySound( deathknight.Location, deathknight.Map, 0x1ED );
+						}
+					}
+					
+					else
+					{	
+						Item deathknightpack = deathknight.FindItemOnLayer( Layer.Backpack );
+						if ( deathknightpack != null )
+						{
+							lantern = deathknight.Backpack.FindItemByType( typeof( SoulLantern ) );
+
+							if ( lantern is SoulLantern )
+							{
+								SoulLantern souls = (SoulLantern)lantern;
+								souls.TrappedSouls = souls.TrappedSouls + (this.TotalGold*6);
+								if ( souls.TrappedSouls > 100000 ){ souls.TrappedSouls = 100000; }
+								souls.InvalidateProperties();
+
+								Item deathpack = this.FindItemOnLayer( Layer.Backpack );
+								if ( deathpack != null )
+								{
+									Item dtcoins = this.Backpack.FindItemByType( typeof( Gold ) );
+	//								dtcoins.Delete();
+									deathknight.SendMessage( "A soul has been claimed." );
+									Effects.SendLocationParticles( EffectItem.Create( deathknight.Location, deathknight.Map, EffectItem.DefaultDuration ), 0x376A, 9, 32, 5008 );
+									Effects.PlaySound( deathknight.Location, deathknight.Map, 0x1ED );
+								}
+							}
 						}
 					}
 				}

@@ -202,12 +202,6 @@ namespace Server.SkillHandlers
 					}
 					else
 					{
-						if ( toChannel != null )
-						{
-							toChannel.Channeled = true;
-							toChannel.Hue = 0x835;
-						}
-
 						Caster.Mana -= mana;
 						Caster.SendMessage( message );
 
@@ -216,6 +210,40 @@ namespace Server.SkillHandlers
 
 						Caster.Hits += Utility.RandomMinMax( min, max );
 						Caster.Stam += Utility.RandomMinMax( min, max );
+						
+						if ( toChannel != null )
+						{
+							toChannel.Channeled = true;
+							toChannel.Hue = 0x835;
+////////////////////SOULSTEAL
+							Item lantern = Caster.FindItemOnLayer( Layer.TwoHanded );
+
+							if ( lantern is SoulLantern )
+							{
+								SoulLantern souls = (SoulLantern)lantern;
+								souls.TrappedSouls = souls.TrappedSouls + (int)(Utility.RandomMinMax( min, max ) * 0.5);
+								if ( souls.TrappedSouls > 100000 ){ souls.TrappedSouls = 100000; }
+								souls.InvalidateProperties();
+							}
+							
+							else
+							{	
+								Item deathknightpack = Caster.FindItemOnLayer( Layer.Backpack );
+								if ( deathknightpack != null )
+								{
+									lantern = Caster.Backpack.FindItemByType( typeof( SoulLantern ) );
+
+									if ( lantern is SoulLantern )
+									{
+										SoulLantern souls = (SoulLantern)lantern;
+										souls.TrappedSouls = souls.TrappedSouls + (int)(Utility.RandomMinMax( min, max ) * 0.3);
+										if ( souls.TrappedSouls > 100000 ){ souls.TrappedSouls = 100000; }
+										souls.InvalidateProperties();
+									}
+								}
+							}
+///////////////////////
+						}
 
 						if ( Caster.Karma < 0 )
 						{
