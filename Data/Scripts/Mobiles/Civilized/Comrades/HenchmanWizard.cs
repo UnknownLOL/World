@@ -2,9 +2,22 @@ using System;
 using System.Collections; 
 using Server.Misc; 
 using Server.Items; 
+using Server.Gumps;
 using Server.Mobiles; 
 using Server.Network;
 using Server.Regions;
+using Server.Targeting;
+using Server.Spells.Fifth;
+using Server.Spells.First;
+using Server.Spells.Fourth;
+using Server.Spells.Necromancy;
+using Server.Spells.Second;
+using Server.Spells.Seventh;
+using Server.Spells.Sixth;
+using Server.Spells.Third;
+using Server.Spells.Magical;
+using Server.Spells.Shinobi;
+using Server.Spells;
 
 namespace Server.Mobiles 
 {
@@ -17,12 +30,12 @@ namespace Server.Mobiles
 		private DateTime m_NextMorale;
 		public DateTime NextMorale{ get{ return m_NextMorale; } set{ m_NextMorale = value; } }
 
-		public override void OnMovement( Mobile m, Point3D oldLocation )
-		{
-			bool GoAway = HenchmanFunctions.OnMoving( m, oldLocation, this, m_NextMorale );
-			if ( GoAway == true ){ Timer.DelayCall( TimeSpan.FromSeconds( 2.0 ), new TimerCallback( Delete ) ); }
-			else { m_NextMorale = (DateTime.Now + TimeSpan.FromSeconds( 60 )); }
-		}
+//		public override void OnMovement( Mobile m, Point3D oldLocation )
+//		{
+//			bool GoAway = HenchmanFunctions.OnMoving( m, oldLocation, this, m_NextMorale );
+//			if ( GoAway == true ){ Timer.DelayCall( TimeSpan.FromSeconds( 2.0 ), new TimerCallback( Delete ) ); }
+//			else { m_NextMorale = (DateTime.Now + TimeSpan.FromSeconds( 60 )); }
+//		}
 
 		[Constructable] 
 		public HenchmanWizard( int myBody, int nMounted, double nSkills, int nStats ) : base( AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4 ) 
@@ -85,6 +98,95 @@ namespace Server.Mobiles
 				ActiveSpeed = 0.1;
 				PassiveSpeed = 0.2;
 			}
+		}
+
+		public DateTime m_NextResurrect;
+		public static TimeSpan ResurrectDelay = TimeSpan.FromSeconds( 20.0 );
+
+		public virtual void OfferResurrection( Mobile m )
+		{
+				Direction = GetDirectionTo( m );
+
+				m.PlaySound( 0x214 );
+				m.FixedEffect( 0x376A, 10, 16 );
+
+				if ( m is PlayerMobile )
+				{
+					m.CloseGump( typeof( ResurrectCostGump ) );
+					m.SendGump( new ResurrectCostGump( m, 1 ) );
+				}
+		}
+
+		public virtual void OfferHeal( Mobile m )
+		{
+			Direction = GetDirectionTo( m );
+
+				Say("Here's some help"); // You look like you need some healing my child.
+				Say("In Vas Mani");
+
+				m.PlaySound( 0x1F2 );
+				m.FixedEffect( 0x376A, 9, 32 );
+
+				m.Hits = (m.Hits + 60);
+//				if( m.Poisoned )
+//					new ArchCureSpell( this, null ).Cast();
+				m_NextResurrect = DateTime.UtcNow + ResurrectDelay;
+		}
+
+		public override void OnMovement( Mobile m, Point3D oldLocation )
+		{
+			bool GoAway = HenchmanFunctions.OnMoving( m, oldLocation, this, m_NextMorale );
+			if ( GoAway == true ){ Timer.DelayCall( TimeSpan.FromSeconds( 2.0 ), new TimerCallback( Delete ) ); }
+			else { m_NextMorale = (DateTime.Now + TimeSpan.FromSeconds( 60 )); }
+			if ( !m.Frozen && m is PlayerMobile && ControlMaster == m && DateTime.UtcNow >= m_NextResurrect && InRange( m, 6 ) && this.InLOS( m ) )
+			{
+				if ( !m.Alive )
+				{
+					m_NextResurrect = DateTime.UtcNow + ResurrectDelay;
+
+					if ( m.Map == null || !m.Map.CanFit( m.Location, 16, false, false ) )
+					{
+						m.SendLocalizedMessage( 502391 ); // Thou can not be resurrected there!
+					}
+					else
+					{
+						OfferResurrection( m );
+					}
+				}
+			}
+		}
+		
+		public override void OnThink()
+		{
+			base.OnThink();
+			Mobile m = this.ControlMaster;
+			BaseCreature bc = null;
+			foreach ( Mobile search in this.GetMobilesInRange( 16 ) )
+			{
+				if ( search is BaseCreature && search != this && this.CanSee( search ) )
+				{
+					bc = ((BaseCreature)search);
+					break;
+				}
+			}
+				if ( m.Alive && m.Hits < m.HitsMax - 30 && DateTime.UtcNow >= m_NextResurrect )
+				{
+					OfferHeal( (Mobile) m );
+				}
+				else if ( m.Hits >= m.HitsMax - 30 && DateTime.UtcNow >= m_NextResurrect )
+				{
+					foreach ( Mobile search in this.GetMobilesInRange( 6 ) ) 
+						{
+//							if ( search is BaseCreature && (search.Body == 0x191 || search.Body == 0x190 || search.Body == 0x25D || search.Body == 0x25E) && ((BaseCreature)search).ControlMaster == this.ControlMaster && ((BaseCreature)search).Controlled == true && search != this && this.CanSee( search ) && search.Hits < search.HitsMax - 10 )
+//							{
+//								OfferHeal( (Mobile) search );
+//							}
+							if ( search is BaseCreature && ((BaseCreature)search).ControlMaster == this.ControlMaster && ((BaseCreature)search).Controlled == true && search != this && this.CanSee( search ) && search.Alive && search.Hits < search.HitsMax - 10 )
+							{
+								OfferHeal( (Mobile) search );
+							}
+						}
+				}
 		}
 
         public override void OnSpeech( SpeechEventArgs e )
