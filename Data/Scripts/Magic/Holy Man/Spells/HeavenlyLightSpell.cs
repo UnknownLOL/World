@@ -48,12 +48,17 @@ namespace Server.Spells.HolyMan
 					if ( targ.BeginAction( typeof( LightCycle ) ) )
 					{
 						new LightCycle.NightSightTimer( targ ).Start();
-						int level = (int)( LightCycle.DungeonLevel * ( (Core.AOS ? targ.Skills[SkillName.Healing].Value : from.Skills[SkillName.Healing].Value )/ 100 ) );
-
-						if ( level < 0 )
-							level = 0;
+//						int level = (int)( LightCycle.DungeonLevel * ( (Core.AOS ? targ.Skills[SkillName.Healing].Value : from.Skills[SkillName.Healing].Value )/ 100 ) );
+						int level = (int)( targ.LightLevel );
+						if ( level < 15 )
+							level = 15;
 
 						targ.LightLevel = level;
+
+//						if ( level < 0 )
+//							level = 0;
+
+//						targ.LightLevel = level;
 
 						targ.FixedParticles( 0x376A, 9, 32, 5007, EffectLayer.Waist );
 						targ.PlaySound( 0x1E3 );

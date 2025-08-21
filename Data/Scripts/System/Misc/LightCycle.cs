@@ -7,11 +7,11 @@ namespace Server
 {
 	public class LightCycle
 	{
-		public const int DayLevel = 0;
+		public const int DayLevel = 5;
 		public const int NightLevel = 20;
 		public const int DungeonLevel = 26;
 		public const int CaveLevel = 26;
-		public const int JailLevel = 13;
+		public const int JailLevel = 16;
 
 		private static int m_LevelOverride = int.MinValue;
 

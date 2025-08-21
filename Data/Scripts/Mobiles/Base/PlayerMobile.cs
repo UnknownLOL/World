@@ -914,8 +914,25 @@ namespace Server.Mobiles
 		{
 			global = LightCycle.ComputeLevelFor( this );
 
-			if ( this.LightLevel < 19 && AosAttributes.GetValue( this, AosAttribute.NightSight ) > 0 )
-				personal = 19;
+			if ( this.LightLevel < 15 && 
+			this.Region.IsPartOf( typeof( BaseRegion ) ) && 
+			!this.Region.IsPartOf( typeof( VillageRegion ) ) && 
+			!this.Region.IsPartOf( typeof( TownRegion ) ) && 
+			!this.Region.IsPartOf( typeof( SkyHomeDwelling ) ) && 
+			!this.Region.IsPartOf( typeof( SeaSpawnRegion ) ) && 
+			!this.Region.IsPartOf( typeof( PirateRegion ) ) && 
+			!this.Region.IsPartOf( typeof( OutDoorRegion ) ) && 
+			!this.Region.IsPartOf( typeof( OutDoorBadRegion ) ) && 
+			!this.Region.IsPartOf( typeof( NoHousingRegion ) ) && 
+			!this.Region.IsPartOf( typeof( MazeRegion ) ) && 
+			!this.Region.IsPartOf( typeof( LunaRegion ) ) && 
+			!this.Region.IsPartOf( typeof( GuardedRegion ) ) && 
+			!this.Region.IsPartOf( typeof( DawnRegion ) ) && 
+			!this.Region.IsPartOf( typeof( CrashRegion ) ) && 
+			!this.Region.IsPartOf( typeof( BardTownRegion ) ) && 
+			!this.Region.IsPartOf( typeof( SafeRegion ) ) && 
+			AosAttributes.GetValue( this, AosAttribute.NightSight ) > 0 )
+				personal = 15;
 			else
 				personal = this.LightLevel;
 		}

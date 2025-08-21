@@ -64,14 +64,19 @@ namespace Server.Spells.Undead
 						int enhance = Server.Items.BasePotion.EnhancePotions( m_Spell.Caster );
 						TimeSpan duration = TimeSpan.FromMinutes( Utility.Random( 15+enhance, 25+enhance ) );
 						new DarkTimer( targ, duration ).Start();
-						int level = (int)Math.Abs( LightCycle.DungeonLevel * ( m_Spell.Caster.Skills[SkillName.Necromancy].Base / 100 ) );
-						
-						if ( level > 25 || level < 0 )
-							level = 25;
+//						int level = (int)Math.Abs( LightCycle.DungeonLevel * ( m_Spell.Caster.Skills[SkillName.Necromancy].Base / 100 ) );
+						int level = (int)( targ.LightLevel );
+						if ( level < 15 )
+							level = 15;
 
-						level = 12;
-						
 						targ.LightLevel = level;
+						
+//						if ( level > 25 || level < 0 )
+//							level = 25;
+
+//						level = 12;
+						
+//						targ.LightLevel = level;
 						
 						targ.FixedParticles( 0x376A, 9, 32, 5007, EffectLayer.Waist );
 						targ.PlaySound( 0x37A );
