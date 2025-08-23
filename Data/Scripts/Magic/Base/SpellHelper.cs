@@ -1091,8 +1091,8 @@ namespace Server.Spells
 					caster.HueMod = transformSpell.Hue;
 					if ( transformSpell.Hue == 0xB70 )
 					{
-						caster.FacialHairHue = 0x497;
-						caster.HairHue = 0x497;
+						caster.FacialHairHue = 0x911; // Vampiric Embrace // Dark - 0x497
+						caster.HairHue = 0x911; // Vampiric Embrace // Dark - 0x497
 					}
 
 					for( int i = 0; i < mods.Count; ++i )
@@ -1167,7 +1167,7 @@ namespace Server.Spells
 
 		protected override void OnTick()
 		{
-			if( m_Mobile.Deleted || !m_Mobile.Alive || m_Mobile.Body != m_Spell.Body || m_Mobile.Hue != m_Spell.Hue )
+			if( m_Mobile.Deleted || !m_Mobile.Alive || ((m_Mobile.Body != m_Spell.Body || m_Mobile.Hue != m_Spell.Hue) && m_Spell.Hue != 0xB70) )
 			{
 				TransformationSpellHelper.RemoveContext( m_Mobile, true );
 				Stop();

@@ -80,6 +80,52 @@ namespace Server.Mobiles
 
 		public bool WarnedSkaraBrae;
 		public bool WarnedBottleCity;
+		
+//////////// Vampire // Vampiric Embrace Bat Form
+		private bool m_IsInForm;
+		
+		public bool IsInForm
+		{
+			get { return m_IsInForm; }
+			set { m_IsInForm = value; }
+		}
+		
+		private static void EndBoost( object state )
+		{
+			PlayerMobile player = state as PlayerMobile;
+			Item shoes = player.FindItemOnLayer( Layer.Shoes );
+			if ( player.Mounted )
+            {
+//                m.SendMessage( "You cannot use this power while on a mount!" );
+            }
+			else if ( shoes is Artifact_BootsofHermes || shoes is Artifact_SprintersSandals )
+			{
+//                m.SendMessage( "You cannot use this power while wearing those magical shoes!" );
+			}
+			else if ( (shoes is HikingBoots || shoes is LevelHikingBoots || shoes is GiftHikingBoots) && player.RaceID > 0 )
+			{
+//                m.SendMessage( "You cannot use this power while wearing hiking boots!" );
+			}
+			else
+			{
+				if (player.RaceID == 0)
+				{
+					player.BodyMod = 0;
+					player.FixedParticles( 0x3779, 1, 15, 9905, 32, 2, EffectLayer.Head );
+//					player.FixedParticles( 0x3728, 1, 14, 9502, 32, 5, (EffectLayer)255 );
+//					Effects.SendLocationParticles( EffectItem.Create( player.Location, player.Map, EffectItem.DefaultDuration ), 0x3728, 8, 20, 0, 0, 5042, 0 );
+				}
+				player.Send(SpeedControl.Disable);
+			}
+			Timer.DelayCall((TimeSpan.FromSeconds(9.0)), new TimerStateCallback(EndCooldown), player);
+		}
+		
+		private static void EndCooldown( object state )
+		{
+			PlayerMobile player = state as PlayerMobile;
+			player.IsInForm = false;
+		}
+//////////////////////////////////////////////////
 
 		public override bool CurePoison( Mobile from )
 		{
@@ -3913,6 +3959,39 @@ namespace Server.Mobiles
 
 		protected override bool OnMove( Direction d )
 		{
+///////////////// Vampire // Vampiric Embrace Bat Form
+
+			PlayerMobile player = this as PlayerMobile;
+			bool run = (d & Direction.Running) != 0;
+			TimeSpan boost = TimeSpan.FromSeconds(3.0);
+			int form = Utility.RandomMinMax( 1, 2 );
+			if ( run && !player.IsInForm && ( TransformationSpellHelper.UnderTransformation( player, typeof( Spells.Necromancy.VampiricEmbraceSpell ) ) ) && !player.Mounted )
+			{				
+				if (player.RaceID == 0)
+				{
+					if (form == 1)
+					{
+						player.BodyMod = 0x13D;
+					}
+					else
+					{
+						player.BodyMod = 0x60;
+					}
+					player.FixedParticles( 0x3779, 1, 15, 9905, 32, 2, EffectLayer.Head );
+//					player.FixedParticles( 0x3728, 1, 14, 9502, 32, 5, (EffectLayer)255 );
+//					Effects.SendLocationParticles( EffectItem.Create( player.Location, player.Map, EffectItem.DefaultDuration ), 0x3728, 8, 20, 0, 0, 5042, 0 );
+				}			
+				player.Send(SpeedControl.MountSpeed);
+				player.IsInForm = true;
+				Timer.DelayCall(boost, new TimerStateCallback(EndBoost), player);
+			}
+//			if (!run && player.IsInForm)
+//			{
+//				player.BodyMod = 0;                    
+//                player.Send(SpeedControl.Disable);
+//				player.IsInForm = false;		
+//			}
+///////////////////////////////////////////////////////
 			if( !Core.SE )
 				return base.OnMove( d );
 
@@ -3971,7 +4050,7 @@ namespace Server.Mobiles
 		}
 
 		#region Fastwalk Prevention
-		private static bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
+		private static bool FastwalkPrevention = false; // Is fastwalk prevention enabled?
 		private static TimeSpan FastwalkThreshold = TimeSpan.FromSeconds( 0.4 ); // Fastwalk prevention will become active after 0.4 seconds
 
 		private DateTime m_NextMovementTime;
