@@ -22,12 +22,13 @@ namespace Server.Spells.Necromancy
 		public override double RequiredSkill{ get{ return 70.0; } }
 		public override int RequiredMana{ get{ return 23; } }
 
-		public override int Body{ get{ return 24; } }
-		public override int Hue{ get{ return 0; } }
+		public override int Body{ get{ return 970; } }
+		public override int Hue{ get{ return 0xA6B; } }
 
 		public override int FireResistOffset{ get{ return -10; } }
-		public override int ColdResistOffset{ get{ return +10; } }
-		public override int PoisResistOffset{ get{ return +10; } }
+		public override int ColdResistOffset{ get{ return +35; } }
+		public override int PoisResistOffset{ get{ return +35; } }
+		public override int NrgyResistOffset{ get{ return +35; } }
 
 		public override double TickRate{ get{ return 2.5; } }
 

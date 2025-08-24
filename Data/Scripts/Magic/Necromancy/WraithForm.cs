@@ -22,13 +22,13 @@ namespace Server.Spells.Necromancy
 		public override double RequiredSkill{ get{ return 20.0; } }
 		public override int RequiredMana{ get{ return 17; } }
 
-		public override int Body{ get{ return 84; } }
-		public override int Hue{ get{ return 0; } }
+		public override int Body{ get{ return 970; } }
+		public override int Hue{ get{ return 0xA6C; } }
 
-		public override int PhysResistOffset{ get{ return +15; } }
+		public override int PhysResistOffset{ get{ return +35; } }
 		public override int FireResistOffset{ get{ return -5; } }
 		public override int ColdResistOffset{ get{ return  0; } }
-		public override int PoisResistOffset{ get{ return  0; } }
+		public override int PoisResistOffset{ get{ return +35; } }
 		public override int NrgyResistOffset{ get{ return -5; } }
 
 		public WraithFormSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )

@@ -21,7 +21,7 @@ namespace Server.Spells.Necromancy
 		public override double RequiredSkill{ get{ return 40.0; } }
 		public override int RequiredMana{ get{ return 11; } }
 
-		public override int Body{ get{ return 126; } }
+		public override int Body{ get{ return 311; } }
 		public override int Hue{ get{ return 0; } }
 
 		public HorrificBeastSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
