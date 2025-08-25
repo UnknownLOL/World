@@ -58,7 +58,7 @@ namespace Server.Mobiles
 			Fame = 0;
 			Karma = 0;
 
-			ControlSlots = 3;
+			ControlSlots = 1;
 
 			VirtualArmor = 32;
 

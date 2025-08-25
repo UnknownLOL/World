@@ -30,7 +30,7 @@ namespace Server.Mobiles
 
 			Name = "a familiar";
 			Body = 0x3A;
-			ControlSlots = 5;
+			ControlSlots = 1;
 			Blessed = true;
 			ActiveSpeed = 0.1;
 			PassiveSpeed = 0.2;
