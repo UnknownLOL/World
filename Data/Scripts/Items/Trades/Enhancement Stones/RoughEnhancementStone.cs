@@ -21,7 +21,7 @@ namespace Server.Items
 			Weight = 1.0;
 			i_Uses = uses;
 			Hue = 0x38C;
-			Name = "Rough Enhancement Stone";
+			Name = "Channeling Enhancement Stone";
 		} 
 
 		public override void GetProperties( ObjectPropertyList list )
@@ -40,7 +40,7 @@ namespace Server.Items
 					Delete();
 					from.SendMessage(32, "This have no charges so it's gone!");
 				}
-				from.SendMessage("Which weapon you want to try to enhance?");
+				from.SendMessage("Which weapon or shield you want to try to enhance?");
 				from.Target = new RoughEnhancementStoneTarget(this);
 			}
 			else
@@ -50,7 +50,7 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
 		{
             base.AddNameProperties(list);
-			list.Add( 1070722, "Can Wondrously Increase a Weapon's Damage");
+			list.Add( 1070722, "Add Spell Channeling to any weapon or shield");
         }
 
 		public void Enhancement(Mobile from, object o)
@@ -64,28 +64,51 @@ namespace Server.Items
 				else if (o is BaseWeapon && ((BaseWeapon)o).IsChildOf(from.Backpack))
 				{
 					BaseWeapon weap = o as BaseWeapon;
-					int i_DI = weap.Attributes.WeaponDamage;
-					if (weap.Quality == WeaponQuality.Exceptional)
-						i_DI += 15;
-					if (i_DI >= 60)
+					if (weap.Attributes.SpellChanneling == 1)
 					{
-						from.SendMessage(32, "This weapon cannot be enhanced any further");
+						from.SendMessage(32, "This weapon already has Spell Channeling");
 						return;
 					}
-					else if (from.Skills[SkillName.Blacksmith].Value < 60.0)
-						from.SendMessage(32, "You need at least 60.0 blacksmith to enhance weapons with this stone");
+					else if (from.Skills[SkillName.Blacksmith].Value < 50.0)
+						from.SendMessage(32, "You need at least 50.0 blacksmith and magery to enhance weapons with Spell Channeling");
+					else if (from.Skills[SkillName.Magery].Value < 50.0)
+						from.SendMessage(32, "You need at least 50.0 blacksmith and magery to enhance weapons with Spell Channeling");
 					else if ( !Deleted )
 					{
-						int bonus = Utility.Random((int)(from.Skills[SkillName.Blacksmith].Value/10));
-						if (bonus > 0)
+						if (weap.Attributes.SpellChanneling != 1)
+							weap.Attributes.CastSpeed -= 1;
+							weap.Attributes.SpellChanneling = 1;
+					
+						if (Uses <= 1)
 						{
-							if (60 < i_DI + bonus)
-								bonus = 60 - i_DI;
-							weap.Attributes.WeaponDamage += bonus;
-							from.SendMessage(88, "You enhance the weapon with {0} damange increase", bonus);
+							from.SendMessage(32, "You used up the enhancement stone");
+							Delete();
 						}
 						else
-							from.SendMessage(32, "You fail to enhance the weapon");
+						{
+							--Uses;
+							from.SendMessage(32, "You have {0} uses left", Uses);
+						}
+					}
+				}
+				else if (o is BaseShield && ((BaseShield)o).IsChildOf(from.Backpack))
+				{
+					BaseShield shield = o as BaseShield;
+					if (shield.Attributes.SpellChanneling == 1)
+					{
+						from.SendMessage(32, "This shield already has Spell Channeling");
+						return;
+					}
+					else if (from.Skills[SkillName.Blacksmith].Value < 50.0)
+						from.SendMessage(32, "You need at least 50.0 blacksmith and magery to enhance shields with Spell Channeling");
+					else if (from.Skills[SkillName.Magery].Value < 50.0)
+						from.SendMessage(32, "You need at least 50.0 blacksmith and magery to enhance shields with Spell Channeling");
+					else if ( !Deleted )
+					{
+						if (shield.Attributes.SpellChanneling != 1)
+							shield.Attributes.CastSpeed -= 1;
+							shield.Attributes.SpellChanneling = 1;
+					
 						if (Uses <= 1)
 						{
 							from.SendMessage(32, "You used up the enhancement stone");
