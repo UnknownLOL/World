@@ -247,16 +247,16 @@ namespace Server.Misc
 				Mobile master = bc.GetMaster();
 
 				if ( master != null && master.AccessLevel > AccessLevel.Player )
-					return Notoriety.CanBeAttacked;
+					return Notoriety.Innocent;
 
 				master = bc.ControlMaster;
 
 				if ( Core.ML && master != null )
 				{
 					if ( ( source == master && CheckAggressor( target.Aggressors, source ) ) || ( CheckAggressor( source.Aggressors, bc ) ) )
-						return Notoriety.CanBeAttacked;
+						return Notoriety.Innocent;
 					else
-						return MobileNotoriety( source, master );
+						return Notoriety.Innocent;
 				}
 
 				if( !bc.Summoned && !bc.Controlled && ((PlayerMobile)source).EnemyOfOneType == target.GetType() )
@@ -306,7 +306,7 @@ namespace Server.Misc
 				BaseCreature bc = (BaseCreature)target;
 
 				if( bc.Controlled && bc.ControlOrder == OrderType.Guard && bc.ControlTarget == source )
-					return Notoriety.CanBeAttacked;
+					return Notoriety.Innocent;
 			}
 
 			if( source is BaseCreature )
@@ -316,7 +316,7 @@ namespace Server.Misc
 				Mobile master = bc.GetMaster();
 				if( master != null )
 					if( CheckAggressor( master.Aggressors, target ) || MobileNotoriety( master, target ) == Notoriety.CanBeAttacked )
-						return Notoriety.CanBeAttacked;
+						return Notoriety.Innocent;
 			}
 
 			return Notoriety.Innocent;
