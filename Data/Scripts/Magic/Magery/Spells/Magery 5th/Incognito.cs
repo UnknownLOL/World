@@ -32,7 +32,8 @@ namespace Server.Spells.Fifth
 		{
 			if ( !Caster.CanBeginAction( typeof( IncognitoSpell ) ) )
 			{
-				Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+//				Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+				Server.Items.DisguiseTimers.RemoveDisguise( Caster );
 				return false;
 			}
 			else if ( !Caster.CanBeginAction( typeof( Deception ) ) )
@@ -48,7 +49,7 @@ namespace Server.Spells.Fifth
 		{
 			if ( !Caster.CanBeginAction( typeof( IncognitoSpell ) ) )
 			{
-				Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+//				Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
 			}
 			else if ( !Caster.CanBeginAction( typeof( Deception ) ) )
 			{
