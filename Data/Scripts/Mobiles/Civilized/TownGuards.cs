@@ -15,24 +15,36 @@ namespace Server.Mobiles
 	public class TownGuards : BasePerson
 	{
 		[Constructable] 
-		public TownGuards() : base( ) 
+		public TownGuards() : base(  ) 
 		{
 			Title = "the guard";
 			NameHue = 1154;
-			SetStr( 3000, 3000 );
-			SetDex( 3000, 3000 );
-			SetInt( 3000, 3000 );
-			SetHits( 6000,6000 );
-			SetDamage( 500, 900 );
-			VirtualArmor = 3000;
+			SetStr(200, 300);
+			SetDex(100, 200);
+			SetInt(50, 100);
+			SetHits( 200,300 );
+			SetDamage( 45, 60 );
+			VirtualArmor = 50;
+			
+				SetDamageType(ResistanceType.Physical, 100);
 
-			SetSkill( SkillName.Anatomy, 200.0 );
-			SetSkill( SkillName.MagicResist, 200.0 );
-			SetSkill( SkillName.Bludgeoning, 200.0 );
-			SetSkill( SkillName.Fencing, 200.0 );
-			SetSkill( SkillName.FistFighting, 200.0 );
-			SetSkill( SkillName.Swords, 200.0 );
-			SetSkill( SkillName.Tactics, 200.0 );
+				SetResistance(ResistanceType.Physical, 50, 70);
+				SetResistance(ResistanceType.Fire, 40, 50);
+				SetResistance(ResistanceType.Cold, 40, 50);
+				SetResistance(ResistanceType.Poison, 40, 50);
+				SetResistance(ResistanceType.Energy, 40, 50);
+
+				SetSkill(SkillName.Swords, 89.0, 100.0);
+				SetSkill(SkillName.Fencing, 89.0, 100.0);
+				SetSkill(SkillName.Bludgeoning, 89.0, 100.0);
+				SetSkill(SkillName.Tactics, 89.0, 100.0);
+				SetSkill(SkillName.MagicResist, 89.0, 100.0);
+				SetSkill(SkillName.Parry, 89.0, 100.0);
+				SetSkill(SkillName.Anatomy, 85.0, 100.0);
+				SetSkill(SkillName.Healing, 85.0, 100.0);
+				SetSkill(SkillName.Searching, 50.0, 100.0);
+				Fame = 5000;
+				Karma = 1000;
 
 			AddItem( new LightCitizen( true ) );
 
@@ -46,12 +58,23 @@ namespace Server.Mobiles
 			Container pack = new Backpack();
 			pack.Movable = false;
 			AddItem( pack );
+			
+			for (int i = 0; i < 3; i++)
+			{
+				PackItem( new GreaterCurePotion() );
+				PackItem( new GreaterHealPotion() );
+				PackItem( new TotalRefreshPotion() );
+			}
+
+			PackItem(new Bandage(Utility.RandomMinMax(10, 40)));
+			PackItem(new Gold(Utility.RandomMinMax(50, 100)));
 		}
 
-		public override bool BardImmune{ get{ return true; } }
-		public override Poison PoisonImmune{ get{ return Poison.Deadly; } }
-		public override bool Unprovokable { get { return true; } }
-		public override bool Uncalmable{ get{ return true; } }
+//		public override bool BardImmune{ get{ return true; } }
+//		public override Poison PoisonImmune{ get{ return Poison.Deadly; } }
+		public override bool DeleteCorpseOnDeath{ get{ return false; } }
+		public override bool Unprovokable { get { return false; } }
+		public override bool Uncalmable{ get{ return false; } }
 
 		public override bool OnDragDrop( Mobile from, Item dropped )
 		{
@@ -368,11 +391,11 @@ namespace Server.Mobiles
 				clothColor = 0x9C4;		shieldType = 0x1BC4;	helmType = 0x140E;		cloakColor = 0x845;		weapon = new VikingSword();
 			}
 
-			weapon.Movable = false;
-			((BaseWeapon)weapon).MaxHitPoints = 1000;
-			((BaseWeapon)weapon).HitPoints = 1000;
-			((BaseWeapon)weapon).MinDamage = 500;
-			((BaseWeapon)weapon).MaxDamage = 900;
+			weapon.Movable = true;
+			((BaseWeapon)weapon).MaxHitPoints = 250;
+			((BaseWeapon)weapon).HitPoints = 100;
+			((BaseWeapon)weapon).MinDamage = 10;
+			((BaseWeapon)weapon).MaxDamage = 25;
 			AddItem( weapon );
 
 			Item arms = new RingmailArms();
@@ -587,14 +610,14 @@ namespace Server.Mobiles
             }
         }
 
-		public override bool OnBeforeDeath()
-		{
-			Say("In Vas Mani");
-			this.Hits = this.HitsMax;
-			this.FixedParticles( 0x376A, 9, 32, 5030, EffectLayer.Waist );
-			this.PlaySound( 0x202 );
-			return false;
-		}
+//		public override bool OnBeforeDeath()
+//		{
+//			Say("One day you will face justice!");
+//			this.Hits = this.HitsMax;
+//			this.FixedParticles( 0x376A, 9, 32, 5030, EffectLayer.Waist );
+//			this.PlaySound( 0x202 );
+//			return true;
+//		}
 
 		public TownGuards( Serial serial ) : base( serial ) 
 		{ 

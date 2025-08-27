@@ -2463,33 +2463,33 @@ namespace Server.Mobiles
 				Stam = StamMax;
 				Mana = ManaMax;
 
-				if ( this.Backpack != null )
-				{
-					List<Item> list = new List<Item>();
-					(this.Backpack).RecurseItems( list );
-					foreach ( Item c in list )
-					{
-						if ( c.LootType != LootType.Blessed )
-						{
-							if (
-									c.Catalog == Catalogs.Reagent || 
-									c.Catalog == Catalogs.Potion || 
-									c.Catalog == Catalogs.Body || 
-									c.Stackable || 
-									c is MagicalWand ||
-									c is ManyArrows100 || 
-									c is ManyBolts100 || 
-									c is ManyArrows1000 || 
-									c is ManyBolts1000 ||
-									c is SkeletonsKey || 
-									c is MasterSkeletonsKey
-							)
-							{
-								c.Delete();
-							}
-						}
-					}
-				}
+//				if ( this.Backpack != null )
+//				{
+//					List<Item> list = new List<Item>();
+//					(this.Backpack).RecurseItems( list );
+//					foreach ( Item c in list )
+//					{
+//						if ( c.LootType != LootType.Blessed )
+//						{
+//							if (
+//									c.Catalog == Catalogs.Reagent || 
+//									c.Catalog == Catalogs.Potion || 
+//									c.Catalog == Catalogs.Body || 
+//									c.Stackable || 
+//									c is MagicalWand ||
+//									c is ManyArrows100 || 
+//									c is ManyBolts100 || 
+//									c is ManyArrows1000 || 
+//									c is ManyBolts1000 ||
+//									c is SkeletonsKey || 
+//									c is MasterSkeletonsKey
+//							)
+//							{
+//								c.Delete();
+//							}
+//						}
+//					}
+//				}
 
 				return false;
 			}
