@@ -3999,6 +3999,13 @@ namespace Server.Mobiles
 			if ( willKill && from is PlayerMobile )
 				Timer.DelayCall( TimeSpan.FromSeconds( 10 ), new TimerCallback( ((PlayerMobile) from).RecoverAmmo ) );
 
+			if (from != null)
+			{
+				double bonus = HunterMarkSystem.GetDamageBonus(from, this);
+				amount = (int)(amount * bonus);
+			}
+
+
 			base.OnDamage( amount, from, willKill );
 			
 			#region KoperPets
@@ -8433,7 +8440,10 @@ namespace Server.Mobiles
 			}
 
 			Server.Misc.DropRelic.DropSpecialItem( this, killer, c ); // SOME DROP RARE ITEMS
-
+			//powerful creatures can drop marks of the scourge / honor
+			if (killer != null)
+        		Server.Custom.DefenderOfTheRealm.MarkLootHelper.CheckForMarks(this, c, killer);
+			
 			if ( IsBonded )
 			{
 				int sound = this.GetDeathSound();
@@ -9621,6 +9631,8 @@ namespace Server.Mobiles
 				if ( m is BaseCreature )
 				{
 					BaseCreature c = (BaseCreature)m;
+					Mobile master = c.ControlMaster;
+					if ( master != null && master.Map == Map.Internal ) continue;
 
 					if ( c.IsDeadPet )
 					{

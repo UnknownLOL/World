@@ -1,0 +1,44 @@
+using System;
+using Server;
+
+namespace Server.Items
+{
+	public class Artifact_LeggingsOfAegis : GiftPlateLegs
+	{
+		public override int InitMinHits{ get{ return 80; } }
+		public override int InitMaxHits{ get{ return 160; } }
+
+		public override int BasePhysicalResistance{ get{ return 18; } }
+
+		[Constructable]
+		public Artifact_LeggingsOfAegis()
+		{
+			Name = "Leggings of Aegis";
+			Hue = 0x47E;
+			ItemID = 0x46AA;
+			ArmorAttributes.SelfRepair = 5;
+			Attributes.ReflectPhysical = 20;
+			Attributes.DefendChance = 20;
+			Attributes.LowerManaCost = 10;
+			ArtifactLevel = 2;
+			Server.Misc.Arty.ArtySetup( this, 10, "" );
+		}
+
+		public Artifact_LeggingsOfAegis( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+			writer.Write( (int) 1 );
+		}
+		
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize( reader );
+			ArtifactLevel = 2;
+			int version = reader.ReadInt();
+		}
+	}
+}

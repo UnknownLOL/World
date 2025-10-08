@@ -64,7 +64,7 @@ namespace Server.Mobiles
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.FilthyRich, 4 );
-			AddLoot( LootPack.Gems, 5 );
+			AddLoot( LootPack.Gems, 8 );
 			AddLoot( LootPack.HighScrolls, 2 );
 		}
 
@@ -105,7 +105,7 @@ namespace Server.Mobiles
 						if ( loot != null )
 						{
 							ResourceMods.SetResource( loot, CraftResource.DemilichSpec );
-							loot = Server.LootPackEntry.Enchant( killer, 500, loot );
+							loot = Server.LootPackEntry.Enchant( killer, 300, loot );
 							loot.InfoText1 = "" + Name + " " + Title + "";
 							c.DropItem( loot ); 
 						}

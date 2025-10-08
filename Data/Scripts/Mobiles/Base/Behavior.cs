@@ -3303,9 +3303,15 @@ namespace Server.Misc
 
 		public static void ChooseFighter( Mobile m, string race )
 		{
-			BaseCreature bc = (BaseCreature)m;
+			BaseCreature bc = m as BaseCreature;
 
-			Region reg = Region.Find( bc.Home, m.Map );
+			if (bc == null || m.Map == null)
+				return;
+
+			Point3D location = (bc.Home != Point3D.Zero) ? bc.Home : m.Location;
+
+			Region reg = Region.Find(location, m.Map);
+			
 
 			int level = 0;
 			int equip = 0;
@@ -4058,11 +4064,11 @@ namespace Server.Misc
 									NecromancerRobe robe = new NecromancerRobe(); if ( Utility.RandomBool() ){ robe.Resource = CraftResource.VileFabric; }
 										robe.Name = gear + " robe";
 										robe.Hue = MagicHue;
-										robe.Attributes.CastRecovery = Magic;
-										robe.Attributes.CastSpeed = Magic;
-										robe.Attributes.LowerManaCost = 4 + Magic;
-										robe.Attributes.LowerRegCost = 4 + Magic;
-										robe.Attributes.SpellDamage = 2 + Magic;
+										robe.Attributes.CastRecovery = Magic > 3 ? 3 : Magic;
+										robe.Attributes.CastSpeed = Magic > 3 ? 3 : Magic;
+										robe.Attributes.LowerManaCost = 4 + Magic > 8 ? 8 : 4 + Magic;
+										robe.Attributes.LowerRegCost = 4 + Magic > 8 ? 8 : 4 + Magic;
+										robe.Attributes.SpellDamage = 2 + Magic > 6 ? 6 : 2 + Magic;
 										from.AddItem( robe );
 									break;
 								case 1: 
@@ -4164,22 +4170,22 @@ namespace Server.Misc
 							Robe robe = new Robe( ); if ( Utility.RandomBool() ){ robe.Resource = CraftResource.MysteriousFabric; }
 								robe.Hue = 0xA2A;
 								robe.Name = "robe of the mad archmage";
-								robe.Attributes.SpellDamage = 35;
+								robe.Attributes.SpellDamage = 30;
 								robe.Attributes.CastRecovery = 1;
 								robe.Attributes.CastSpeed = 1;
-								robe.Attributes.LowerManaCost = 30;
-								robe.Attributes.LowerRegCost = 30;
+								robe.Attributes.LowerManaCost = 25;
+								robe.Attributes.LowerRegCost = 25;
 								from.AddItem( robe );
 							break;
 						case 1: 
 							WizardsHat hat = new WizardsHat( ); if ( Utility.RandomBool() ){ hat.Resource = CraftResource.MysteriousFabric; }
 								hat.Hue = 0xA2A;
 								hat.Name = "hat of the mad archmage";
-								hat.Attributes.SpellDamage = 25;
+								hat.Attributes.SpellDamage = 20;
 								hat.Attributes.CastRecovery = 1;
 								hat.Attributes.CastSpeed = 1;
-								hat.Attributes.LowerManaCost = 20;
-								hat.Attributes.LowerRegCost = 20;
+								hat.Attributes.LowerManaCost = 15;
+								hat.Attributes.LowerRegCost = 15;
 								from.AddItem( hat );
 							break;
 					}
@@ -4197,7 +4203,7 @@ namespace Server.Misc
 								robe.Name = "ice queen robe";
 								robe.Attributes.RegenMana = 5;
 								robe.Attributes.ReflectPhysical = 20;
-								robe.Attributes.SpellDamage = 35;
+								robe.Attributes.SpellDamage = 25;
 								from.AddItem( robe );
 							break;
 						case 1: 
@@ -4205,8 +4211,8 @@ namespace Server.Misc
 								hat.Hue = 0x482;
 								hat.Name = "ice queen hat";
 								hat.Attributes.RegenMana = 3;
-								hat.Attributes.ReflectPhysical = 10;
-								hat.Attributes.SpellDamage = 15;
+								hat.Attributes.ReflectPhysical = 15;
+								hat.Attributes.SpellDamage = 10;
 								from.AddItem( hat );
 							break;
 					}
@@ -9633,7 +9639,7 @@ namespace Server.Mobiles
 							spell = GetRandomManaDrainSpell();
 							break;
 						}
-					case 7:
+					/* case 7:
 						{
 							//m_Mobile.DebugSay( "Attempting to Invis" );
 
@@ -9643,7 +9649,7 @@ namespace Server.Mobiles
 							}
 
 							break;
-						}
+						} */
 
 					default: // Damage them.
 						{
